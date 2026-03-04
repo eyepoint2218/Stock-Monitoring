@@ -26,6 +26,11 @@ class TickerSnapshot:
     timestamp: str
 
 
+@dataclass
+class StatusUpdate:
+    message: str
+
+
 class StockMonitorApp:
     def __init__(self, root: tk.Tk):
         self.root = root
@@ -34,7 +39,7 @@ class StockMonitorApp:
 
         self.ticker_map: Dict[str, str] = {}
         self.tracked_symbols: List[str] = []
-        self.queue: Queue[TickerSnapshot] = Queue()
+        self.queue: Queue[TickerSnapshot | StatusUpdate] = Queue()
         self.stop_event = threading.Event()
         self.worker_thread: threading.Thread | None = None
 
@@ -167,7 +172,7 @@ class StockMonitorApp:
                     )
                     self.queue.put(snapshot)
                 except Exception as exc:
-                    self.status_var.set(f"{symbol} 조회 실패: {exc}")
+                    self.queue.put(StatusUpdate(message=f"{symbol} 조회 실패: {exc}"))
 
             time.sleep(REFRESH_SECONDS)
 
@@ -177,6 +182,10 @@ class StockMonitorApp:
                 snapshot = self.queue.get_nowait()
             except Empty:
                 break
+
+            if isinstance(snapshot, StatusUpdate):
+                self.status_var.set(snapshot.message)
+                continue
 
             name = self.name_for_symbol(snapshot.symbol)
             price_text = f"{snapshot.price:,.2f}"
