@@ -1,0 +1,10 @@
+[
+  {"name": "KOSPI (^KS11)", "symbol": "^KS11"},
+  {"name": "KOSDAQ (^KQ11)", "symbol": "^KQ11"},
+  {"name": "NASDAQ (^IXIC)", "symbol": "^IXIC"},
+  {"name": "S&P500 (^GSPC)", "symbol": "^GSPC"},
+  {"name": "삼성전자 (005930.KS)", "symbol": "005930.KS"},
+  {"name": "SK하이닉스 (000660.KS)", "symbol": "000660.KS"},
+  {"name": "Apple (AAPL)", "symbol": "AAPL"},
+  {"name": "Microsoft (MSFT)", "symbol": "MSFT"}
+]
